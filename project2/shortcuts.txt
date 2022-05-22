@@ -1,0 +1,113 @@
+#### Compile without optimizations
+`$ gcc -save-temps -O0 main.c`
+
+
+## Radare2
+#### Debugging 
+```
+$ r2 -Ad a.out 
+$ r2 -w a.out  # in my Mac
+$ db main
+$ dc
+$ Vpp
+
+$ :px @obj.pass.1964
+$ :pr @obj.pass.1964
+
+How to print an address from memory
+$ :pv @0x601018
+
+Seek for something
+$ s sym._fini
+
+- Using 32 bits
+$ apt-get install gcc-multilib
+$ gcc -m32 -o bin_name source_code.c
+$ r2 -Ad bin_name
+
+$ chmod 777 downloaded_file 
+$ gcc -m32 -z execstack file.c
+```
+Now you can navigate around using `j` and `k`, go into a command menu with `:` make a step with `s` or step over with `S`.
+Use `c` to navigate
+
+https://github.com/AndyNovo/secsoft.git
+```
+$ r2 -Ad pwn1
+$ s main
+Set a break point up to this:
+$ db 0x56563205
+continue:  
+$ dc
+print a location of memory, register
+$ px @ebx-0x18a4
+call sym.__x86.get_pc_thunk.bx <-- this enables global variables
+$
+$
+$
+$
+```
+## Calling Conventions
+
+1. Call
+```
+PUSH rip
+JMP .thefunction
+```
+2. Functions start with
+```
+Stack Pointer             Base Pointer
+RSP                       RBP
+ __ _____________________ __
+|__|_____________________|__|
+     Variables data
+     lives here
+RBP - remains fixed during the execution of the function.
+RSP - makes room for what I need.
+```
+```
+PUSH rbp        ;this stores the OLD base pointer so you can recover your previous "state"
+MOV rbp, rsp    ;It replaces with old base pointer to the current stack pointer
+```
+3. Return, like: Go back where you come from.
+```
+leave
+ret
+```
+Where:
+```
+leave == mov rsp, rbp; pop rbp;
+ret   == pop rip;
+```
+Which does the following:
+```
+mov rsp, rbp
+pop rbp
+pop rip
+```
+which is the exact inverse of the previous steps
+
+### Rabin
+To See symbols tablex and look for the offset:
+```
+For Symbols:
+$ rabin2 -s a.out
+For Strings:
+$ rabin2 -z a.out
+```
+## Assembler
+```
+$ nasm -f elf hi.asm
+$ ld -m elf_i386 -s -o thebinary hi.o
+```
+## Checksec
+```
+$ checksec --file=a.out
+RELRO: Relocation Table Read Only
+Canary: It means you can control the Stack
+NX: Non-executable Stack. Red means it's executable
+PIE: Position Independent Execution, which is the address of the optcode change each time you run it
+RWX: It refers to segments of memory accesible from this program that are readable, writable and executable. Which means it is exploitable by shellcode.
+ASLR: makes the other segments randomized each execution of the program
+ 
+```
