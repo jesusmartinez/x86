@@ -1,0 +1,56 @@
+ddddssi
+
+$ rabin2 -s filename
+$ rabin2 -z filename
+$ file chall_12
+
+Lectures to look at:
+Daily PEN and instro to PLT and GOT - march 2
+Introduction to the printf vulnerability - march 11
+first white-what-where - march 14
+
+seepdruns
+8, 11, 12 - printf
+
+
+Same as checksec
+elf = ELF("pwnme")
+Get address of symbol imported functions. These are writable, not executable
+elf.got - Global offset table
+Address of memory that are callable. These are executable
+elf.plt - Global procedings table
+elf.sym
+
+
+Daily PWN ret to libc (use a leak)
+
+
+Solved:
+- Speedruns: 
+	ch00 OK 
+	ch01 OK
+	ch02 OK
+	ch03 OK
+	ch04 OK for loop, call rdx
+	ch05 OK PIE enabled
+	ch06 OK NX exacutable
+	ch07 OK call sheelcode directly, PIE enabled
+	ch08 OK but LEARN - NO PIE, win(), this scans two integers: WRITE-WHAT-WHERE
+	ch09 OK PIE enabled, win(), Crypto string
+	ch10 OK 32-bit NO PIE
+	ch11 OK WRITE-WHAT-WHERE, printf()
+	ch12 OK WRITE-WHAT-WHERE, printf() with leak of main() address
+	ch13 OK
+	ch14 - doing
+	ch15 OK 
+
+- Pwns:
+	chall_00
+
+- Ec:
+	pwnme
+
+
+Python3
+- cyclic(200)
+- cyclic_find("naa")
